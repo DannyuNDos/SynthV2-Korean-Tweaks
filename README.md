@@ -1,4 +1,4 @@
-# Korean-Tweaks
+# SynthV2-Korean-Tweaks
 A script for aiding SynthV 2's Korean pronunciation.
 
 ## How to use

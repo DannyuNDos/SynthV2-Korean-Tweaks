@@ -128,7 +128,7 @@ function tweakKorean(note, correct_s, distinguish_e) {
                     }
                     break;
                 default:
-                    break;
+                    return;
             }
             if ("mandarin" == note.getLanguageOverride()) {
                 switch (onsetN[onset]) {
@@ -365,6 +365,9 @@ function tweakKorean(note, correct_s, distinguish_e) {
                         break;
                 }
             }
+        }
+        else {
+            return;
         }
         phonemes = phonemes.concat(syllable_phonemes);
     }

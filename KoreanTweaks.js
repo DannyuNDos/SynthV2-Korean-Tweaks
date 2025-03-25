@@ -68,11 +68,17 @@ function tweakKorean(note, correct_s, distinguish_e) {
                         note.setLanguageOverride("mandarin");
                         syllable_phonemes = ["j", "a"];
                     }
+                    else {
+                        note.setLanguageOverride("korean");
+                    }
                     break;
                 case 'ㅐ':
                     if (distinguish_e) {
                         note.setLanguageOverride("english");
                         syllable_phonemes = ["ae"];
+                    }
+                    else {
+                        note.setLanguageOverride("korean");
                     }
                     break;
                 case 'ㅒ':
@@ -84,11 +90,17 @@ function tweakKorean(note, correct_s, distinguish_e) {
                         note.setLanguageOverride("mandarin");
                         syllable_phonemes = ["j", "e"];
                     }
+                    else {
+                        note.setLanguageOverride("korean");
+                    }
                     break;
                 case 'ㅕ':
                     if (correct_s && "ㅅㅆ".includes(onsetN[onset])) {
                         note.setLanguageOverride("mandarin");
                         syllable_phonemes = ["j", "@"];
+                    }
+                    else {
+                        note.setLanguageOverride("korean");
                     }
                     break;
                 case 'ㅖ':
@@ -96,11 +108,17 @@ function tweakKorean(note, correct_s, distinguish_e) {
                         note.setLanguageOverride("mandarin");
                         syllable_phonemes = ["j", "e"];
                     }
+                    else {
+                        note.setLanguageOverride("korean");
+                    }
                     break;
                 case 'ㅙ':
                     if (distinguish_e) {
                         note.setLanguageOverride("english");
                         syllable_phonemes = ["w", "ae"];
+                    }
+                    else {
+                        note.setLanguageOverride("korean");
                     }
                     break;
                 case 'ㅛ':
@@ -108,11 +126,17 @@ function tweakKorean(note, correct_s, distinguish_e) {
                         note.setLanguageOverride("mandarin");
                         syllable_phonemes = ["j", "U"];
                     }
+                    else {
+                        note.setLanguageOverride("korean");
+                    }
                     break;
                 case 'ㅟ':
                     if (correct_s && "ㅅㅆ".includes(onsetN[onset])) {
                         note.setLanguageOverride("mandarin");
                         syllable_phonemes = ["y", ":\\i"];
+                    }
+                    else {
+                        note.setLanguageOverride("korean");
                     }
                     break;
                 case 'ㅠ':
@@ -120,15 +144,22 @@ function tweakKorean(note, correct_s, distinguish_e) {
                         note.setLanguageOverride("mandarin");
                         syllable_phonemes = ["j", "u"];
                     }
+                    else {
+                        note.setLanguageOverride("korean");
+                    }
                     break;
                 case 'ㅣ':
                     if (correct_s && "ㅅㅆ".includes(onsetN[onset])) {
                         note.setLanguageOverride("mandarin");
                         syllable_phonemes = ["i"];
                     }
+                    else {
+                        note.setLanguageOverride("korean");
+                    }
                     break;
                 default:
-                    return;
+                    note.setLanguageOverride("korean");
+                    break;
             }
             if ("mandarin" == note.getLanguageOverride()) {
                 switch (onsetN[onset]) {
@@ -364,6 +395,10 @@ function tweakKorean(note, correct_s, distinguish_e) {
                         syllable_phonemes.push("g");
                         break;
                 }
+            }
+            else if ("korean" == note.getLanguageOverride()) {
+                note.setPhonemes(null);
+                return;
             }
         }
         else {

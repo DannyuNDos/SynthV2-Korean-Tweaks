@@ -9,6 +9,8 @@ function getClientInfo() {
 };
 
 function main() {
+    const noteGroup = SV.getMainEditor().getCurrentGroup().getTarget();
+    const automation = noteGroup.getParameter("mouthOpening");
     const notes = SV.getMainEditor().getSelection().getSelectedNotes();
     if (0 == notes.length) {
         SV.showMessageBox("Korean Tweaks", "Select notes before execution of this script.");
@@ -34,12 +36,17 @@ function main() {
                 "name": "C", "type": "CheckBox",
                 "text": "Correct codas ㄱ/ㄷ/ㅂ",
                 "default": true
+            },
+            {
+                "name": "OE", "type": "CheckBox",
+                "text": "Pronounce ㅚ/ㅟ as a monophthong",
+                "default": false
             }
         ]
     };
     const result = SV.showCustomDialog(form);
     for (var i = 0; i < notes.length; ++i) {
-        tweakKorean(notes[i], result.answers["S"], result.answers["E"], result.answers["C"]);
+        tweakKorean(notes[i], automation, result.answers["S"], result.answers["E"], result.answers["C"], result.answers["OE"]);
     }
     SV.finish();
 };
@@ -49,7 +56,7 @@ String.prototype.replaceAll = function (search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-function tweakKorean(note, correct_s, distinguish_e, correct_codas) {
+function tweakKorean(note, automation, correct_s, distinguish_e, correct_codas, monophthong_oe) {
     const lyrics = note.getLyrics();
     var phonemes = [];
     var leading_glottal = 0;
@@ -73,13 +80,14 @@ function tweakKorean(note, correct_s, distinguish_e, correct_codas) {
                     syllable_phonemes = ["6"];
                     break;
                 case 'ㅐ':
+                    note.setLanguageOverride("korean");
+                    syllable_phonemes = ["e_o"];
                     if (distinguish_e) {
-                        note.setLanguageOverride("english");
-                        syllable_phonemes = ["ae"];
-                    }
-                    else {
-                        note.setLanguageOverride("korean");
-                        syllable_phonemes = ["e_o"];
+                        automation.remove(note.getOnset(), note.getEnd());
+                        automation.add(note.getOnset(), 0.0);
+                        automation.add(note.getOnset() + 1, 1.0);
+                        automation.add(note.getEnd() - 2, 1.0);
+                        automation.add(note.getEnd() - 1, 0.0);
                     }
                     break;
                 case 'ㅑ':
@@ -92,17 +100,20 @@ function tweakKorean(note, correct_s, distinguish_e, correct_codas) {
                     }
                     break;
                 case 'ㅒ':
-                    if (distinguish_e) {
-                        note.setLanguageOverride("english");
-                        syllable_phonemes = ["y", "ae"];
-                    }
-                    else if (correct_s && "ㅅㅆ".includes(onsetN[onset])) {
+                    if (correct_s && "ㅅㅆ".includes(onsetN[onset])) {
                         note.setLanguageOverride("mandarin");
                         syllable_phonemes = ["j", "e"];
                     }
                     else {
                         note.setLanguageOverride("korean");
                         syllable_phonemes = ["j", "e_o"];
+                    }
+                    if (distinguish_e) {
+                        automation.remove(note.getOnset(), note.getEnd());
+                        automation.add(note.getOnset(), 0.0);
+                        automation.add(note.getOnset() + 1, 1.0);
+                        automation.add(note.getEnd() - 2, 1.0);
+                        automation.add(note.getEnd() - 1, 0.0);
                     }
                     break;
                 case 'ㅓ':
@@ -142,18 +153,30 @@ function tweakKorean(note, correct_s, distinguish_e, correct_codas) {
                     syllable_phonemes = ["w", "a"];
                     break;
                 case 'ㅙ':
+                    note.setLanguageOverride("korean");
+                    syllable_phonemes = ["w", "e_o"];
                     if (distinguish_e) {
-                        note.setLanguageOverride("english");
-                        syllable_phonemes = ["w", "ae"];
+                        automation.remove(note.getOnset(), note.getEnd());
+                        automation.add(note.getOnset(), 0.0);
+                        automation.add(note.getOnset() + 1, 1.0);
+                        automation.add(note.getEnd() - 2, 1.0);
+                        automation.add(note.getEnd() - 1, 0.0);
+                    }
+                    break;
+                case 'ㅚ':
+                    if (monophthong_oe) {
+                        note.setLanguageOverride("mandarin");
+                        syllable_phonemes = ["y"];
+                        automation.remove(note.getOnset(), note.getEnd());
+                        automation.add(note.getOnset(), 0.0);
+                        automation.add(note.getOnset() + 1, 0.2);
+                        automation.add(note.getEnd() - 2, 0.2);
+                        automation.add(note.getEnd() - 1, 0.0);
                     }
                     else {
                         note.setLanguageOverride("korean");
                         syllable_phonemes = ["w", "e_o"];
                     }
-                    break;
-                case 'ㅚ':
-                    note.setLanguageOverride("korean");
-                    syllable_phonemes = ["w", "e_o"];
                     break;
                 case 'ㅛ':
                     if (correct_s && "ㅅㅆ".includes(onsetN[onset])) {
@@ -178,7 +201,7 @@ function tweakKorean(note, correct_s, distinguish_e, correct_codas) {
                     syllable_phonemes = ["w", "e"];
                     break;
                 case 'ㅟ':
-                    if (correct_s && "ㅅㅆ".includes(onsetN[onset])) {
+                    if (correct_s && "ㅅㅆ".includes(onsetN[onset]) || monophthong_oe) {
                         note.setLanguageOverride("mandarin");
                         syllable_phonemes = ["y", ":\\i"];
                     }
@@ -335,125 +358,8 @@ function tweakKorean(note, correct_s, distinguish_e, correct_codas) {
                     note.setRapAccent(4);
                 }
             }
-            else if ("english" == note.getLanguageOverride()) {
-                switch (onsetN[onset]) {
-                    case 'ㄱ':
-                        syllable_phonemes = ["g"].concat(syllable_phonemes);
-                        break;
-                    case 'ㄲ':
-                        syllable_phonemes = ["cl", "g"].concat(syllable_phonemes);
-                        break;
-                    case 'ㄴ':
-                        syllable_phonemes = ["n"].concat(syllable_phonemes);
-                        break;
-                    case 'ㄷ':
-                        syllable_phonemes = ["d"].concat(syllable_phonemes);
-                        break;
-                    case 'ㄸ':
-                        syllable_phonemes = ["cl", "d"].concat(syllable_phonemes);
-                        break;
-                    case 'ㄹ':
-                        syllable_phonemes = ["dx"].concat(syllable_phonemes);
-                        break;
-                    case 'ㅁ':
-                        syllable_phonemes = ["m"].concat(syllable_phonemes);
-                        break;
-                    case 'ㅂ':
-                        syllable_phonemes = ["b"].concat(syllable_phonemes);
-                        break;
-                    case 'ㅃ':
-                        syllable_phonemes = ["cl", "b"].concat(syllable_phonemes);
-                        break;
-                    case 'ㅅ':
-                        if (syllable_phonemes[0] == "y") {
-                            syllable_phonemes = ["sh"].concat(syllable_phonemes.slice(1));
-                        }
-                        else if (["iy"].indexOf(syllable_phonemes[0]) >= 0) {
-                            syllable_phonemes = ["sh"].concat(syllable_phonemes);
-                        }
-                        else {
-                            syllable_phonemes = ["s"].concat(syllable_phonemes);
-                        }
-                        break;
-                    case 'ㅆ':
-                        if (syllable_phonemes[0] == "y") {
-                            syllable_phonemes = ["sh", "sh"].concat(syllable_phonemes.slice(1));
-                        }
-                        else if (["iy"].indexOf(syllable_phonemes[0]) >= 0) {
-                            syllable_phonemes = ["sh", "sh"].concat(syllable_phonemes);
-                        }
-                        else {
-                            syllable_phonemes = ["s", "s"].concat(syllable_phonemes);
-                        }
-                        break;
-                    case 'ㅇ':
-                        break;
-                    case 'ㅈ':
-                        if (syllable_phonemes[0] == "y") {
-                            syllable_phonemes = ["jh"].concat(syllable_phonemes.slice(1));
-                        }
-                        else {
-                            syllable_phonemes = ["jh"].concat(syllable_phonemes);
-                        }
-                        break;
-                    case 'ㅉ':
-                        if (syllable_phonemes[0] == "y") {
-                            syllable_phonemes = ["cl", "jh"].concat(syllable_phonemes.slice(1));
-                        }
-                        else {
-                            syllable_phonemes = ["cl", "jh"].concat(syllable_phonemes);
-                        }
-                        break;
-                    case 'ㅊ':
-                        if (syllable_phonemes[0] == "y") {
-                            syllable_phonemes = ["ch"].concat(syllable_phonemes.slice(1));
-                        }
-                        else {
-                            syllable_phonemes = ["ch"].concat(syllable_phonemes);
-                        }
-                        break;
-                    case 'ㅋ':
-                        syllable_phonemes = ["k"].concat(syllable_phonemes);
-                        break;
-                    case 'ㅌ':
-                        syllable_phonemes = ["t"].concat(syllable_phonemes);
-                        break;
-                    case 'ㅍ':
-                        syllable_phonemes = ["p"].concat(syllable_phonemes);
-                        break;
-                    default:
-                        syllable_phonemes = ["hh"].concat(syllable_phonemes);
-                        break;
-                }
-                switch (codaN[coda]) {
-                    case ' ':
-                        break;
-                    case 'ㄴ': case 'ㄵ': case 'ㄶ':
-                        syllable_phonemes.push("n");
-                        break;
-                    case 'ㄹ': case 'ㄼ': case 'ㄽ': case 'ㄾ': case 'ㅀ':
-                        syllable_phonemes.push("l");
-                        break;
-                    case 'ㄻ': case 'ㅁ':
-                        syllable_phonemes.push("m");
-                        break;
-                    case 'ㅇ':
-                        syllable_phonemes.push("ng");
-                        break;
-                    case 'ㄷ': case 'ㅅ': case 'ㅆ': case 'ㅈ': case 'ㅊ': case 'ㅌ': case 'ㅎ':
-                        syllable_phonemes.push("d");
-                        break;
-                    case 'ㄿ': case 'ㅂ': case 'ㅄ': case 'ㅍ':
-                        syllable_phonemes.push("b");
-                        break;
-                    default:
-                        syllable_phonemes.push("g");
-                        break;
-                }
-            }
             else if ("korean" == note.getLanguageOverride()) {
                 if (correct_codas) {
-
                     switch (onsetN[onset]) {
                         case 'ㄱ':
                             syllable_phonemes = ["g"].concat(syllable_phonemes);

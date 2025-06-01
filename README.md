@@ -27,3 +27,5 @@ This script works only for Hangul lyrics.
 This script borrows Mandarin phonemes to aid the Korean pronunciation.
 
 The options to tweak vowels override the "mouth opening" parameter.
+
+This script is guaranteed to work on only the standalone version of SynthV Studio 2. On the VSTi version, this script may suffer from compatibility issues.

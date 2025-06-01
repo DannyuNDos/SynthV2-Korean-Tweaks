@@ -26,4 +26,4 @@ This script works only for Hangul lyrics.
 
 This script borrows Mandarin phonemes to aid the Korean pronunciation.
 
-The options to tweak vowels overrides the "mouth opening" parameter.
+The options to tweak vowels override the "mouth opening" parameter.

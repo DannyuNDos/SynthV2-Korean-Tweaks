@@ -13,14 +13,17 @@ In the SynthV Studio, select the notes that has Korean lyrics written in Hangul,
 
 Then a dialog will appear. Select the functions you want to apply, and then click on the "Ok" button.
 
-Currently, this script has 3 features:
+Currently, this script has 4 features:
  * Correction of palatalization of ㅅ/ㅆ
  * Distinction of ㅐ/ㅔ
  * Correction of codas ㄱ/ㄷ/ㅂ
+ * Option to pronounce ㅚ/ㅟ as monophthongs
 
 ## Caveats
 You need SynthV Studio 2 Pro to use this script.
 
 This script works only for Hangul lyrics.
 
-This script borrows Mandarin phonemes and English phonemes to aid the Korean pronunciation.
+This script borrows Mandarin phonemes to aid the Korean pronunciation.
+
+The options to tweak vowels overrides the "mouth opening" parameter.

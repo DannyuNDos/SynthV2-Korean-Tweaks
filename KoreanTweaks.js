@@ -97,6 +97,7 @@ function tweakKorean(note, automation, correct_s, distinguish_e, correct_codas, 
                     }
                     else {
                         note.setLanguageOverride("korean");
+                        syllable_phonemes = ["j", "6"];
                     }
                     break;
                 case 'ㅒ':

@@ -379,7 +379,12 @@ function tweakKorean(notes) {
                     }
                 case 'ㄶ':
                 case 'ㄴ':
-                    syllable_phonemes.push(":n");
+                    if ("ㄹㄼㄽㄾㅀ".includes(post_onset)) {
+                        syllable_phonemes.push("l");
+                    }
+                    else {
+                        syllable_phonemes.push(":n");
+                    }
                     break;
                 case 'ㄼ':
                     if ('ㅇ' == post_onset) {
@@ -441,7 +446,7 @@ function tweakKorean(notes) {
                         break;
                     }
                 case 'ㄷ':
-                    if ("ㄴㅁ".includes(post_onset)) {
+                    if ("ㄴㄹㅁ".includes(post_onset)) {
                         syllable_phonemes.push(":n");
                     }
                     else {
@@ -464,7 +469,7 @@ function tweakKorean(notes) {
                         break;
                     }
                 case 'ㅂ':
-                    if ("ㄴㅁ".includes(post_onset)) {
+                    if ("ㄴㄹㅁ".includes(post_onset)) {
                         syllable_phonemes.push("m");
                     }
                     else {
@@ -492,7 +497,7 @@ function tweakKorean(notes) {
                         break;
                     }
                 case 'ㄱ':
-                    if ("ㄴㅁ".includes(post_onset)) {
+                    if ("ㄴㄹㅁ".includes(post_onset)) {
                         syllable_phonemes.push("N");
                     }
                     else {
@@ -546,7 +551,7 @@ function tweakKorean(notes) {
                     syllable_phonemes = ["cl", "d"].concat(syllable_phonemes);
                     break;
                 case 'ㄹ':
-                    if ("ㄹㄼㄽㄾㅀ".includes(pre_coda)) {
+                    if ("ㄱㄲㄳㄵㄷㄺㄻㄼㄾㄿㅂㅄㅅㅆㅈㅊㅋㅌㅍ".includes(pre_coda)) {
                         syllable_phonemes = ["l"].concat(syllable_phonemes);
                     }
                     else {
@@ -640,7 +645,12 @@ function tweakKorean(notes) {
                     }
                 case 'ㄶ':
                 case 'ㄴ':
-                    syllable_phonemes.push("n");
+                    if ("ㄹㄼㄽㄾㅀ".includes(post_onset)) {
+                        syllable_phonemes.push("l");
+                    }
+                    else {
+                        syllable_phonemes.push("n");
+                    }
                     break;
                 case 'ㄼ':
                     if ('ㅇ' == post_onset) {
@@ -702,7 +712,7 @@ function tweakKorean(notes) {
                         break;
                     }
                 case 'ㄷ':
-                    if ("ㄴㅁ".includes(post_onset)) {
+                    if ("ㄴㄹㅁ".includes(post_onset)) {
                         syllable_phonemes.push("n");
                     }
                     else {
@@ -725,7 +735,7 @@ function tweakKorean(notes) {
                         break;
                     }
                 case 'ㅂ':
-                    if ("ㄴㅁ".includes(post_onset)) {
+                    if ("ㄴㄹㅁ".includes(post_onset)) {
                         syllable_phonemes.push("m");
                     }
                     else {
@@ -753,7 +763,7 @@ function tweakKorean(notes) {
                         break;
                     }
                 case 'ㄱ':
-                    if ("ㄴㅁ".includes(post_onset)) {
+                    if ("ㄴㄹㅁ".includes(post_onset)) {
                         syllable_phonemes.push("ng");
                     }
                     else {
@@ -808,7 +818,7 @@ function tweakKorean(notes) {
                     syllable_phonemes = ["t_t"].concat(syllable_phonemes);
                     break;
                 case 'ㄹ':
-                    if ("ㄹㄼㄽㄾㅀ".includes(pre_coda)) {
+                    if ("ㄱㄲㄳㄵㄷㄺㄻㄼㄾㄿㅂㅄㅅㅆㅈㅊㅋㅌㅍ".includes(pre_coda)) {
                         default_required = false;
                         syllable_phonemes = ["l"].concat(syllable_phonemes);
                     }
@@ -910,7 +920,12 @@ function tweakKorean(notes) {
                     }
                 case 'ㄶ':
                 case 'ㄴ':
-                    syllable_phonemes.push("n");
+                    if ("ㄹㄼㄽㄾㅀ".includes(post_onset)) {
+                        syllable_phonemes.push("l");
+                    }
+                    else {
+                        syllable_phonemes.push("n");
+                    }
                     break;
                 case 'ㄼ':
                     if ('ㅇ' == post_onset) {
@@ -982,7 +997,7 @@ function tweakKorean(notes) {
                     }
                 case 'ㄷ':
                     default_required = false;
-                    if ("ㄴㅁ".includes(post_onset)) {
+                    if ("ㄴㄹㅁ".includes(post_onset)) {
                         syllable_phonemes.push("n");
                     }
                     else {
@@ -1008,7 +1023,7 @@ function tweakKorean(notes) {
                     }
                 case 'ㅂ':
                     default_required = false;
-                    if ("ㄴㅁ".includes(post_onset)) {
+                    if ("ㄴㄹㅁ".includes(post_onset)) {
                         syllable_phonemes.push("m");
                     }
                     else {
@@ -1040,7 +1055,7 @@ function tweakKorean(notes) {
                     }
                 case 'ㄱ':
                     default_required = false;
-                    if ("ㄴㅁ".includes(post_onset)) {
+                    if ("ㄴㄹㅁ".includes(post_onset)) {
                         syllable_phonemes.push("ng");
                     }
                     else {

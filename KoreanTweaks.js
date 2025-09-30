@@ -1102,7 +1102,7 @@ function tweakKorean(notes) {
                 case 'ㄱ':
                     default_required = false;
                     if ("ㄴㄹㅁ".includes(post_onset)) {
-                        syllable_phonemes.push("ng");
+                        syllable_phonemes.push("N");
                     }
                     else if ('ㅎ' != post_onset) {
                         syllable_phonemes.push("g");

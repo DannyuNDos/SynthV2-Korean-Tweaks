@@ -4,20 +4,58 @@ function getClientInfo() {
         "category": "Unofficial language support",
         "author": "Dannyu NDos",
         "versionNumber": 0,
-        "minEditorVersion": 67840
+        "minEditorVersion": 131330,
+        "type": "SidePanelSection"
     };
-};
+}
 
-function main() {
-    const notes = SV.getMainEditor().getSelection().getSelectedNotes();
-    if (0 == notes.length) {
-        SV.showMessageBox("Korean Tweaks", "Select notes before execution of this script.");
-        SV.finish();
-        return;
+const TITLE = "KOREAN TWEAKS";
+const MESSAGE = "Select notes with Hangul lyrics, and press the button below.";
+const BUTTON_TEXT = "Correct pronunciation";
+function getTranslations(langCode) {
+    if (langCode == "ja-jp") {
+        return [
+            [TITLE, "韓国語発音矯正"],
+            [MESSAGE, "ハングルの歌詞が書いてある音符たちを選択して、ボタンを押してください。"],
+            [BUTTON_TEXT, "発音を矯正"]
+        ];
     }
-    tweakKorean(notes);
-    SV.finish();
-};
+    else if (langCode == "zh-cn") {
+        return [
+            [TITLE, "韩语发音校正"],
+            [MESSAGE, "请选择写有韩文歌词的音符们，按下按键。"],
+            [BUTTON_TEXT, "校正发音"]
+        ];
+    }
+    else if (langCode == "zh-tw") {
+        return [
+            [TITLE, "韓語發音校正"],
+            [MESSAGE, "請選擇寫有韓文歌詞的音符們，按下按鍵。"],
+            [BUTTON_TEXT, "校正發音"]
+        ];
+    }
+    else if (langCode == "ko-kr") {
+        return [
+            [TITLE, "한국어 발음교정"],
+            [MESSAGE, "한글 가사가 적힌 음표들을 선택하고, 버튼을 눌러주세요."],
+            [BUTTON_TEXT, "발음 교정하기"]
+        ];
+    }
+    else if (langCode == "fr-fr") {
+        return [
+            [TITLE, "RÉGLAGES DU CORÉEN"],
+            [MESSAGE, "Sélectionnez des notes avec les paroles de Hangul, et appuyez sur le bouton."],
+            [BUTTON_TEXT, "Corrigez la prononciation"]
+        ];
+    }
+    else if (langCode == "es-la") {
+        return [
+            [TITLE, "AJUSTES EN COREANO"],
+            [MESSAGE, "Seleccione notas con las letras de Hangul, y apriete el botón."],
+            [BUTTON_TEXT, "Corrija la pronunciación"]
+        ];
+    }
+}
 
 const onsetN = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
 const vowelN = "ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ";
@@ -43,18 +81,31 @@ function decomposeHangul(character) {
     }
 }
 
-String.prototype.replaceAll = function (search, replacement) {
-    var target = this;
-    return target.replace(new RegExp(search, 'g'), replacement);
-};
-
 function tweakKorean(notes) {
     for (var i = 0; i < notes.length; ++i) {
         const note = notes[i];
         note.setPhonemes(null);
-        const pre_lyrics = 0 == i || notes[i-1].getEnd() < note.getOnset() ? null : notes[i-1].getLyrics();
+        const get_pre_lyrics = function (j) {
+            if (0 == j || notes[j - 1].getEnd() < note.getOnset()) {
+                return null;
+            }
+            else {
+                const pre_lyrics_candidate = notes[j - 1].getLyrics();
+                return "-" != pre_lyrics_candidate ? pre_lyrics_candidate : get_pre_lyrics(j - 1);
+            }
+        };
+        const pre_lyrics = get_pre_lyrics(i);
         const lyrics = note.getLyrics();
-        const post_lyrics = notes.length - 1 == i || note.getEnd() < notes[i+1].getOnset() ? null : notes[i+1].getLyrics();
+        const get_post_lyrics = function (j) {
+            if (notes.length - 1 == j || note.getEnd() < notes[j + 1].getOnset()) {
+                return null;
+            }
+            else {
+                const post_lyrics_candidate = notes[j + 1].getLyrics();
+                return "-" != post_lyrics_candidate ? post_lyrics_candidate : get_post_lyrics(j + 1);
+            }
+        };
+        const post_lyrics = get_post_lyrics(i);
         var phonemes = [];
         var leading_glottal = 0;
         if ('\'' == lyrics[0]) {
@@ -386,7 +437,7 @@ function tweakKorean(notes) {
                     break;
                 case 'ㄵ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat(["n", "ts\\"]);
+                        syllable_phonemes = syllable_phonemes.concat(["n", "ts\\"]);
                         break;
                     }
                 case 'ㄶ':
@@ -400,17 +451,17 @@ function tweakKorean(notes) {
                     break;
                 case 'ㄼ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat(["l", "p"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "p"]);
                         break;
                     }
                 case 'ㄽ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["l", "s\\"] : ["l", "s"]);
+                        syllable_phonemes = syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["l", "s\\"] : ["l", "s"]);
                         break;
                     }
                 case 'ㄾ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["l", "ts\\h"] : ["l", "th"]);
+                        syllable_phonemes = syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["l", "ts\\h"] : ["l", "th"]);
                         break;
                     }
                 case 'ㅀ':
@@ -419,7 +470,7 @@ function tweakKorean(notes) {
                     break;
                 case 'ㄻ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat(["l", "m"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "m"]);
                         break;
                     }
                 case 'ㅁ':
@@ -435,7 +486,7 @@ function tweakKorean(notes) {
                     }
                 case 'ㅆ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["s\\", "s\\"] : ["s", "s"]);
+                        syllable_phonemes = syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["s\\", "s\\"] : ["s", "s"]);
                         break;
                     }
                 case 'ㅈ':
@@ -462,17 +513,17 @@ function tweakKorean(notes) {
                         syllable_phonemes.push("n");
                     }
                     else if ('ㅎ' != post_onset) {
-                        syllable_phonemes.push("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? "ts\\" : "t");
+                        syllable_phonemes.push('ㅇ' == post_onset && "ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? "ts\\" : "t");
                     }
                     break;
                 case 'ㄿ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat(["l", "ph"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "ph"]);
                         break;
                     }
                 case 'ㅄ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["p", "s\\", "s\\"] : ["p", "s", "s"]);
+                        syllable_phonemes = syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["p", "s\\", "s\\"] : ["p", "s", "s"]);
                         break;
                     }
                 case 'ㅍ':
@@ -490,17 +541,17 @@ function tweakKorean(notes) {
                     break;
                 case 'ㄲ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat(["cl", "k"]);
+                        syllable_phonemes = syllable_phonemes.concat(["cl", "k"]);
                         break;
                     }
                 case 'ㄳ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["k", "s\\", "s\\"] : ["k", "s", "s"]);
+                        syllable_phonemes = syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["k", "s\\", "s\\"] : ["k", "s", "s"]);
                         break;
                     }
                 case 'ㄺ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat(["l", "k"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "k"]);
                         break;
                     }
                 case 'ㅋ':
@@ -563,7 +614,7 @@ function tweakKorean(notes) {
                     syllable_phonemes = ["cl", "d"].concat(syllable_phonemes);
                     break;
                 case 'ㄹ':
-                    if ("ㄱㄲㄳㄵㄷㄺㄻㄼㄾㄿㅁㅂㅄㅅㅇㅆㅈㅊㅋㅌㅍ".includes(pre_coda)) {
+                    if (' ' != pre_coda) {
                         syllable_phonemes = ["l"].concat(syllable_phonemes);
                     }
                     else {
@@ -663,7 +714,7 @@ function tweakKorean(notes) {
                     break;
                 case 'ㄵ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat(["n", "jh"]);
+                        syllable_phonemes = syllable_phonemes.concat(["n", "jh"]);
                         break;
                     }
                 case 'ㄶ':
@@ -677,17 +728,17 @@ function tweakKorean(notes) {
                     break;
                 case 'ㄼ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat(["l", "b"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "b"]);
                         break;
                     }
                 case 'ㄽ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["l", "sh"] : ["l", "s"]);
+                        syllable_phonemes = syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["l", "sh"] : ["l", "s"]);
                         break;
                     }
                 case 'ㄾ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["l", "ch"] : ["l", "t"]);
+                        syllable_phonemes = syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["l", "ch"] : ["l", "t"]);
                         break;
                     }
                 case 'ㅀ':
@@ -700,7 +751,7 @@ function tweakKorean(notes) {
                     break;
                 case 'ㄻ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat(["l", "m"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "m"]);
                         break;
                     }
                 case 'ㅁ':
@@ -716,7 +767,7 @@ function tweakKorean(notes) {
                     }
                 case 'ㅆ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["sh", "sh"] : ["s", "s"]);
+                        syllable_phonemes = syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["sh", "sh"] : ["s", "s"]);
                         break;
                     }
                 case 'ㅈ':
@@ -743,17 +794,17 @@ function tweakKorean(notes) {
                         syllable_phonemes.push("n");
                     }
                     else if ('ㅎ' != post_onset) {
-                        syllable_phonemes.push("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? "jh" : "d");
+                        syllable_phonemes.push('ㅇ' == post_onset && "ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? "jh" : "d");
                     }
                     break;
                 case 'ㄿ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat(["l", "p"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "p"]);
                         break;
                     }
                 case 'ㅄ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["b", "sh", "sh"] : ["b", "s", "s"]);
+                        syllable_phonemes = syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["b", "sh", "sh"] : ["b", "s", "s"]);
                         break;
                     }
                 case 'ㅍ':
@@ -771,17 +822,17 @@ function tweakKorean(notes) {
                     break;
                 case 'ㄲ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat(["cl", "g"]);
+                        syllable_phonemes = syllable_phonemes.concat(["cl", "g"]);
                         break;
                     }
                 case 'ㄳ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["g", "sh", "sh"] : ["g", "s", "s"]);
+                        syllable_phonemes = syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["g", "sh", "sh"] : ["g", "s", "s"]);
                         break;
                     }
                 case 'ㄺ':
                     if ('ㅇ' == post_onset) {
-                        syllable_phonemes.concat(["l", "g"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "g"]);
                         break;
                     }
                 case 'ㅋ':
@@ -845,7 +896,7 @@ function tweakKorean(notes) {
                     syllable_phonemes = ["t_t"].concat(syllable_phonemes);
                     break;
                 case 'ㄹ':
-                    if ("ㄱㄲㄳㄵㄷㄺㄻㄼㄾㄿㅁㅂㅄㅅㅇㅆㅈㅊㅋㅌㅍ".includes(pre_coda)) {
+                    if (' ' != pre_coda) {
                         default_required = false;
                         syllable_phonemes = ["l"].concat(syllable_phonemes);
                     }
@@ -956,7 +1007,7 @@ function tweakKorean(notes) {
                 case 'ㄵ':
                     if ('ㅇ' == post_onset) {
                         default_required = false;
-                        syllable_phonemes.concat(["n", "dz\\"]);
+                        syllable_phonemes = syllable_phonemes.concat(["n", "dz\\"]);
                         break;
                     }
                 case 'ㄶ':
@@ -971,19 +1022,19 @@ function tweakKorean(notes) {
                 case 'ㄼ':
                     if ('ㅇ' == post_onset) {
                         default_required = false;
-                        syllable_phonemes.concat(["l", "b"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "b"]);
                         break;
                     }
                 case 'ㄽ':
                     if ('ㅇ' == post_onset) {
                         default_required = false;
-                        syllable_phonemes.concat(["l", "s"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "s"]);
                         break;
                     }
                 case 'ㄾ':
                     if ('ㅇ' == post_onset) {
                         default_required = false;
-                        syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["l", "ts\\_h"] : ["l", "t"]);
+                        syllable_phonemes = syllable_phonemes.concat("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? ["l", "ts\\_h"] : ["l", "t"]);
                         break;
                     }
                 case 'ㅀ':
@@ -998,7 +1049,7 @@ function tweakKorean(notes) {
                 case 'ㄻ':
                     if ('ㅇ' == post_onset) {
                         default_required = false;
-                        syllable_phonemes.concat(["l", "m"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "m"]);
                         break;
                     }
                 case 'ㅁ':
@@ -1047,19 +1098,19 @@ function tweakKorean(notes) {
                         syllable_phonemes.push("n");
                     }
                     else if ('ㅎ' != post_onset) {
-                        syllable_phonemes.push("ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? "dz\\" : "d");
+                        syllable_phonemes.push('ㅇ' == post_onset && "ㅑㅒㅕㅖㅛㅟㅠㅣ".includes(post_vowel) ? "dz\\" : "d");
                     }
                     break;
                 case 'ㄿ':
                     if ('ㅇ' == post_onset) {
                         default_required = false;
-                        syllable_phonemes.concat(["l", "p"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "p"]);
                         break;
                     }
                 case 'ㅄ':
                     if ('ㅇ' == post_onset) {
                         default_required = false;
-                        syllable_phonemes.concat(["b", "s_t"]);
+                        syllable_phonemes = syllable_phonemes.concat(["b", "s_t"]);
                         break;
                     }
                 case 'ㅍ':
@@ -1079,19 +1130,19 @@ function tweakKorean(notes) {
                 case 'ㄲ':
                     if ('ㅇ' == post_onset) {
                         default_required = false;
-                        syllable_phonemes.concat(["k_t"]);
+                        syllable_phonemes = syllable_phonemes.concat(["k_t"]);
                         break;
                     }
                 case 'ㄳ':
                     if ('ㅇ' == post_onset) {
                         default_required = false;
-                        syllable_phonemes.concat(["g", "s_t"]);
+                        syllable_phonemes = syllable_phonemes.concat(["g", "s_t"]);
                         break;
                     }
                 case 'ㄺ':
                     if ('ㅇ' == post_onset) {
                         default_required = false;
-                        syllable_phonemes.concat(["l", "g"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "g"]);
                         break;
                     }
                 case 'ㅋ':
@@ -1117,4 +1168,31 @@ function tweakKorean(notes) {
             note.setPhonemes(phonemes.join(" "));
         }
     }
+}
+
+var buttonValue = SV.create("WidgetValue");
+buttonValue.setValueChangeCallback(function () {
+    tweakKorean(SV.getMainEditor().getSelection().getSelectedNotes());
+});
+
+function getSidePanelSectionState() {
+    return {
+        "title": SV.T(TITLE),
+        "rows": [
+            {
+                "type": "Label",
+                "text": SV.T(MESSAGE)
+            },
+            {
+                "type": "Container",
+                "columns": [
+                    {
+                        "type": "Button",
+                        "text": SV.T(BUTTON_TEXT),
+                        "value": buttonValue
+                    }
+                ]
+            }
+        ]
+    };
 }

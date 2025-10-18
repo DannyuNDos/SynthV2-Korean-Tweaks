@@ -1172,7 +1172,7 @@ function tweakKorean(notes) {
 
 var buttonValue = SV.create("WidgetValue");
 buttonValue.setValueChangeCallback(function () {
-    tweakKorean(SV.getMainEditor().getSelection().getSelectedNotes());
+    tweakKorean(SV.getMainEditor().getSelection().getSelectedNotes().sort(function (note1, note2) { return note1.getOnset() - note2.getOnset(); }));
 });
 
 function getSidePanelSectionState() {

@@ -1028,7 +1028,7 @@ function tweakKorean(notes) {
                 case 'ㄽ':
                     if ('ㅇ' == post_onset) {
                         default_required = false;
-                        syllable_phonemes = syllable_phonemes.concat(["l", "s"]);
+                        syllable_phonemes = syllable_phonemes.concat(["l", "s_t"]);
                         break;
                     }
                 case 'ㄾ':

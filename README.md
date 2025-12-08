@@ -4,7 +4,7 @@ A script for aiding SynthV 2's Korean pronunciation.
 ## How to use
 
 ### Installation
-Copy the attached JavaScript file to the `scripts` folder, as shown in https://sv2.docs.dreamtonics.com/en/scripts.
+Copy the attached JavaScript file to the `scripts` folder, as accessible by executing `Scripts > Open Scripts Folder` in the menu of SynthV.
 
 **Be sure to save the file in UTF-8 format.**
 

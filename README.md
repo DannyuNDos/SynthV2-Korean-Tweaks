@@ -18,6 +18,8 @@ The pronunciation issues that this script fixes include:
 * Pronunciation of ㅟ
 * Distinction of ㅐ/ㅔ
 
+This script also offers an option for the North Korean pronunciation, specifically for the de-palatalized ㅈ/ㅉ/ㅊ.
+
 ## Caveats
 You need SynthV Studio 2 with the version of at least 2.1.2 to use this script.
 

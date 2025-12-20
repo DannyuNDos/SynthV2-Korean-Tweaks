@@ -18,13 +18,13 @@ The pronunciation issues that this script fixes include:
 * Pronunciation of ㅟ
 * Distinction of ㅐ/ㅔ
 
-This script also offers an option for the North Korean pronunciation, specifically for the de-palatalized ㅈ/ㅉ/ㅊ.
+This script also offers an option for the North Korean pronunciation, specifically for the de-palatalized ㅈ/ㅉ/ㅊ and the rounded ㅓ.
 
 ## Caveats
 You need SynthV Studio 2 with the version of at least 2.1.2 to use this script.
 
 This script works only for Hangul lyrics.
 
-This script borrows Mandarin phonemes and English phonemes to aid the Korean pronunciation.
+This script borrows Mandarin, English, and Japanese phonemes to aid the Korean pronunciation.
 
 This script is guaranteed to work on only the standalone version of SynthV Studio 2. On the VSTi version, this script may suffer from compatibility issues.

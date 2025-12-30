@@ -374,7 +374,6 @@ function tweakKorean(notes, north_korean) {
                 else {
                     note.setLanguageOverride("korean");
                     syllable_phonemes = ["M_", "i"];
-                    default_required = false;
                 }
                 break;
             case 'ㅣ':
@@ -597,7 +596,7 @@ function tweakKorean(notes, north_korean) {
                         break;
                     }
                 case 'ㅎ':
-                    if ('ㅇ' == post_onset) {
+                    if ("ㄱㄷㅂㅇㅈ".includes(post_onset)) {
                         break;
                     }
                 case 'ㄷ':
@@ -878,7 +877,7 @@ function tweakKorean(notes, north_korean) {
                         break;
                     }
                 case 'ㅎ':
-                    if ('ㅇ' == post_onset) {
+                    if ("ㄱㄷㅂㅇㅈ".includes(post_onset)) {
                         break;
                     }
                 case 'ㄷ':
@@ -1147,7 +1146,7 @@ function tweakKorean(notes, north_korean) {
                         break;
                     }
                 case 'ㅎ':
-                    if ('ㅇ' == post_onset) {
+                    if ("ㄱㄷㅂㅇㅈ".includes(post_onset)) {
                         break;
                     }
                 case 'ㄷ':
@@ -1449,7 +1448,7 @@ function tweakKorean(notes, north_korean) {
                         break;
                     }
                 case 'ㅎ':
-                    if ('ㅇ' == post_onset) {
+                    if ("ㄱㄷㅂㅇㅈ".includes(post_onset)) {
                         default_required = false;
                         break;
                     }

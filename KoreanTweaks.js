@@ -732,7 +732,7 @@ function tweakKorean(notes, north_korean) {
                     break;
                 case 'ㅅ':
                     if ("ㄱㄲㄳㄵㄷㄺㄻㄾㄿㅂㅄㅅㅆㅈㅊㅋㅌㅍ".includes(pre_coda)) {
-                        if (["i", "y"].indexOf(syllable_phonemes[0]) != -1) {
+                        if (["iy", "y"].indexOf(syllable_phonemes[0]) != -1) {
                             syllable_phonemes = ["sh", "sh"].concat(syllable_phonemes[0] == "y" ? syllable_phonemes.slice(1) : syllable_phonemes);
                         }
                         else {
@@ -740,7 +740,7 @@ function tweakKorean(notes, north_korean) {
                         }
                     }
                     else {
-                        if (["i", "y"].indexOf(syllable_phonemes[0]) != -1) {
+                        if (["iy", "y"].indexOf(syllable_phonemes[0]) != -1) {
                             syllable_phonemes = ["sh"].concat(syllable_phonemes[0] == "y" ? syllable_phonemes.slice(1) : syllable_phonemes);
                         }
                         else {
@@ -749,7 +749,7 @@ function tweakKorean(notes, north_korean) {
                     }
                     break;
                 case 'ㅆ':
-                    if (["i", "y"].indexOf(syllable_phonemes[0]) != -1) {
+                    if (["iy", "y"].indexOf(syllable_phonemes[0]) != -1) {
                         syllable_phonemes = ["sh", "sh"].concat(syllable_phonemes[0] == "y" ? syllable_phonemes.slice(1) : syllable_phonemes);
                     }
                     else {

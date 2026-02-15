@@ -15,7 +15,7 @@ The pronunciation issues that this script fixes include:
 * Sandhi
 * Codas ㄱ/ㄷ/ㅂ
 * Palatalization of ㅅ/ㅆ
-* Pronunciation of ㅟ
+* Pronunciation of ㅚ/ㅟ
 * Distinction of ㅐ/ㅔ
 
 This script also offers an option for the North Korean pronunciation, specifically for the de-palatalized ㅈ/ㅉ/ㅊ and the rounded ㅓ.

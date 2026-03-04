@@ -12,6 +12,7 @@ function getClientInfo() {
 const TITLE = "KOREAN TWEAKS";
 const MESSAGE = "Select notes with Hangul lyrics, and press the button below.";
 const NORTH_KOREAN_TEXT = "Use North Korean pronunication";
+const FORCE_PUTTING_TEXT = "Force putting phonemes";
 const BUTTON_TEXT = "Correct pronunciation";
 function getTranslations(langCode) {
     if (langCode == "ja-jp") {
@@ -19,6 +20,7 @@ function getTranslations(langCode) {
             [TITLE, "韓国語発音矯正"],
             [MESSAGE, "ハングルの歌詞が書いてある音符たちを選択して、ボタンを押してください。"],
             [NORTH_KOREAN_TEXT, "北朝鮮の発音を使う"],
+            [FORCE_PUTTING_TEXT, "音素を強制に入れる"],
             [BUTTON_TEXT, "発音を矯正"]
         ];
     }
@@ -27,6 +29,7 @@ function getTranslations(langCode) {
             [TITLE, "韩语发音校正"],
             [MESSAGE, "选择写有韩文歌词的音符们，按下按键。"],
             [NORTH_KOREAN_TEXT, "使用北朝鲜的发音"],
+            [FORCE_PUTTING_TEXT, "强制插入音素"],
             [BUTTON_TEXT, "校正发音"]
         ];
     }
@@ -35,6 +38,7 @@ function getTranslations(langCode) {
             [TITLE, "韓語發音校正"],
             [MESSAGE, "選擇寫有韓文歌詞的音符們，按下按鍵。"],
             [NORTH_KOREAN_TEXT, "使用北朝鮮的發音"],
+            [FORCE_PUTTING_TEXT, "强制插入音素"],
             [BUTTON_TEXT, "校正發音"]
         ];
     }
@@ -43,6 +47,7 @@ function getTranslations(langCode) {
             [TITLE, "한국어 발음교정"],
             [MESSAGE, "한글 가사가 적힌 음표들을 선택하고, 버튼을 눌러주세요."],
             [NORTH_KOREAN_TEXT, "북한식으로 발음하기"],
+            [FORCE_PUTTING_TEXT, "음소를 강제로 넣기"],
             [BUTTON_TEXT, "발음 교정하기"]
         ];
     }
@@ -50,16 +55,18 @@ function getTranslations(langCode) {
         return [
             [TITLE, "RÉGLAGES DU CORÉEN"],
             [MESSAGE, "Sélectionnez des notes avec les paroles de Hangul, et appuyez sur le bouton."],
-            [NORTH_KOREAN_TEXT, "Utilisez la prononciation nord-coréen"],
-            [BUTTON_TEXT, "Corrigez la prononciation"]
+            [NORTH_KOREAN_TEXT, "Utiliser la prononciation nord-coréen"],
+            [FORCE_PUTTING_TEXT, "Forcer l'insertion des phonèmes"],
+            [BUTTON_TEXT, "Corriger la prononciation"]
         ];
     }
     else if (langCode == "es-la") {
         return [
             [TITLE, "AJUSTES EN COREANO"],
             [MESSAGE, "Seleccione notas con las letras de Hangul, y apriete el botón."],
-            [NORTH_KOREAN_TEXT, "Use la pronunciación norcoreano"],
-            [BUTTON_TEXT, "Corrija la pronunciación"]
+            [NORTH_KOREAN_TEXT, "Usar la pronunciación norcoreano"],
+            [FORCE_PUTTING_TEXT, "Forzar la inserción de fonemas"],
+            [BUTTON_TEXT, "Corregir la pronunciación"]
         ];
     }
 }
@@ -88,7 +95,7 @@ function decomposeHangul(character) {
     }
 }
 
-function tweakKorean(notes, north_korean) {
+function tweakKorean(notes, north_korean, force_putting) {
     for (var i = 0; i < notes.length; ++i) {
         const note = notes[i];
         note.setPhonemes(null);
@@ -1566,20 +1573,24 @@ function tweakKorean(notes, north_korean) {
             }
         }
         phonemes = phonemes.concat(syllable_phonemes);
-        if (!default_required) {
+        if (!default_required || force_putting) {
             note.setPhonemes(phonemes.join(" "));
         }
     }
 }
 
-var checkValue = SV.create("WidgetValue");
-checkValue.setValue(false);
+var northKoreanCheckValue = SV.create("WidgetValue");
+northKoreanCheckValue.setValue(false);
+
+var forcePuttingCheckValue = SV.create("WidgetValue");
+forcePuttingCheckValue.setValue(false);
 
 var buttonValue = SV.create("WidgetValue");
 buttonValue.setValueChangeCallback(function () {
     tweakKorean(
         SV.getMainEditor().getSelection().getSelectedNotes().sort(function (note1, note2) { return note1.getOnset() - note2.getOnset(); }),
-        checkValue.getValue()
+        northKoreanCheckValue.getValue(),
+        forcePuttingCheckValue.getValue()
     );
 });
 
@@ -1597,7 +1608,17 @@ function getSidePanelSectionState() {
                     {
                         "type": "CheckBox",
                         "text": SV.T(NORTH_KOREAN_TEXT),
-                        "value": checkValue
+                        "value": northKoreanCheckValue
+                    }
+                ]
+            },
+            {
+                "type": "Container",
+                "columns": [
+                    {
+                        "type": "CheckBox",
+                        "text": SV.T(FORCE_PUTTING_TEXT),
+                        "value": forcePuttingCheckValue
                     }
                 ]
             },

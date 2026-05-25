@@ -17,8 +17,7 @@ The pronunciation issues that this script fixes include:
 * Pronunciation of ㅚ/ㅟ
 * Distinction of ㅐ/ㅔ
 
-This script also offers some options as checkboxes. These are:
-* An option for North Korean pronunciation, specifically for the de-palatalized ㅈ/ㅉ/ㅊ and the rounded ㅓ.
+This script also offers an option as a checkbox, namely for North Korean pronunciation, specifically for the de-palatalized ㅈ/ㅉ/ㅊ and the rounded ㅓ.
 
 ## Caveats
 You need SynthV Studio 2 with the version of at least 2.3.0tp1 to use this script.

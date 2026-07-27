@@ -96,6 +96,7 @@ function decomposeHangul(character) {
 }
 
 function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
+    var defaultPhones = true;
     const jamos = decomposeHangul(note.getLyrics());
     const noteIndex = note.getIndexInParent();
     const pre_coda = 0 == noteIndex ? null : decomposeHangul(noteGroup.getNote(noteIndex - 1).getLyrics())["coda"];
@@ -166,6 +167,7 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
         case 'ㅅ':
             if (!fallback && "ㅑㅒㅕㅖㅛㅟㅠㅣ".indexOf(jamos["vowel"]) != -1) {
                 tweakKorean_FrenchDelegate(noteGroup, note, phones, northKorean);
+                return;
             }
             else if ("ㄱㄲㄳㄷㄺㄿㅂㅄㅅㅆㅈㅉㅊㅋㅌㅍ".indexOf(pre_coda) != -1) {
                 newPhones.push("s_t");
@@ -177,6 +179,7 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
         case 'ㅆ':
             if (!fallback && "ㅑㅒㅕㅖㅛㅟㅠㅣ".indexOf(jamos["vowel"]) != -1) {
                 tweakKorean_FrenchDelegate(noteGroup, note, phones, northKorean);
+                return;
             }
             else {
                 newPhones.push("s_t");
@@ -299,8 +302,11 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
             newPhones.push("e_o");
             break;
         case 'ㅑ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
+            }
+            else {
+                defaultPhones = false;
             }
             newPhones.push("6");
             break;
@@ -309,8 +315,11 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
                 tweakKorean_FrenchDelegate(noteGroup, note, phones, northKorean);
                 return;
             }
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
+            }
+            else {
+                defaultPhones = false;
             }
             newPhones.push("e_o");
             break;
@@ -329,14 +338,20 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
                 tweakKorean_FrenchDelegate(noteGroup, note, phones, northKorean);
                 return;
             }
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
+            }
+            else {
+                defaultPhones = false;
             }
             newPhones.push("V");
             break;
         case 'ㅖ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
+            }
+            else {
+                defaultPhones = false;
             }
             newPhones.push("e_o");
             break;
@@ -356,8 +371,11 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
             newPhones.push("e_o");
             break;
         case 'ㅛ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
+            }
+            else {
+                defaultPhones = false;
             }
             newPhones.push("o");
             break;
@@ -381,8 +399,11 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
             newPhones.push("i");
             break;
         case 'ㅠ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
+            }
+            else {
+                defaultPhones = false;
             }
             newPhones.push("u");
             break;
@@ -403,6 +424,7 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
                 newPhones.push("N");
             }
             else if ('ㅇ' != post_onset) {
+                defaultPhones = false;
                 newPhones.push("g");
             }
             break;
@@ -411,6 +433,7 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
                 newPhones.push("N");
             }
             else {
+                defaultPhones = false;
                 newPhones.push("g");
             }
             break;
@@ -435,6 +458,7 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
                 newPhones.push("n");
             }
             else if ('ㅇ' != post_onset) {
+                defaultPhones = false;
                 newPhones.push("d");
             }
             break;
@@ -448,6 +472,7 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
                 newPhones.push("N");
             }
             else if ('ㅇ' != post_onset) {
+                defaultPhones = false;
                 newPhones.push("g");
             }
             else {
@@ -470,6 +495,7 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
                 newPhones.push("m");
             }
             else if ('ㅇ' != post_onset) {
+                defaultPhones = false;
                 newPhones.push("b");
             }
             else {
@@ -486,6 +512,7 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
                 newPhones.push("m");
             }
             else if ('ㅇ' != post_onset) {
+                defaultPhones = false;
                 newPhones.push("b");
             }
             break;
@@ -494,6 +521,7 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
                 newPhones.push("m");
             }
             else {
+                defaultPhones = false;
                 newPhones.push("b");
             }
             break;
@@ -502,12 +530,15 @@ function tweakKorean(noteGroup, note, phones, northKorean, fallback) {
                 newPhones.push("N");
             }
             break;
-        case 'ㅎ': default:
+        case 'ㅎ':
+            defaultPhones = false;
+            break;
+        default:
             break;
     }
     note.setLanguageOverride("korean");
     const newPhonemeSymbols = newPhones.join(" ");
-    if (newPhonemeSymbols != phones.join(" ")) {
+    if (!defaultPhones) {
         note.setPhonemes(newPhonemeSymbols);
     }
 }
@@ -563,11 +594,12 @@ function tweakKorean_FrenchDelegate(noteGroup, note, phones, northKorean) {
             if (' ' == pre_coda) {
                 if ("ㅐㅒㅙ".indexOf(jamos["vowel"]) != -1) {
                     tweakKorean_PortugueseDelegate(noteGroup, note, phones, northKorean);
+                    return;
                 }
                 else {
                     tweakKorean(noteGorup, note, phones, northKorean, true);
+                    return;
                 }
-                return;
             }
             else {
                 newPhones.push("l");
@@ -727,13 +759,13 @@ function tweakKorean_FrenchDelegate(noteGroup, note, phones, northKorean) {
             newPhones.push("E");
             break;
         case 'ㅑ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             newPhones.push("a");
             break;
         case 'ㅒ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             newPhones.push("E");
@@ -750,7 +782,7 @@ function tweakKorean_FrenchDelegate(noteGroup, note, phones, northKorean) {
             newPhones.push("e");
             break;
         case 'ㅕ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             if (northKorean) {
@@ -761,7 +793,7 @@ function tweakKorean_FrenchDelegate(noteGroup, note, phones, northKorean) {
             }
             break;
         case 'ㅖ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             newPhones.push("e");
@@ -781,7 +813,7 @@ function tweakKorean_FrenchDelegate(noteGroup, note, phones, northKorean) {
             newPhones.push("2");
             break;
         case 'ㅛ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("H");
             }
             newPhones.push("o");
@@ -807,7 +839,7 @@ function tweakKorean_FrenchDelegate(noteGroup, note, phones, northKorean) {
             newPhones.push("i");
             break;
         case 'ㅠ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("H");
             }
             newPhones.push("u");
@@ -1165,13 +1197,13 @@ function tweakKorean_MandarinDelegate(noteGroup, note, phones, northKorean) {
             newPhones.push("e");
             break;
         case 'ㅑ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             newPhones.push("a");
             break;
         case 'ㅒ': case 'ㅖ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             newPhones.push("e");
@@ -1185,7 +1217,7 @@ function tweakKorean_MandarinDelegate(noteGroup, note, phones, northKorean) {
             }
             break;
         case 'ㅕ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             if (northKorean) {
@@ -1207,7 +1239,7 @@ function tweakKorean_MandarinDelegate(noteGroup, note, phones, northKorean) {
             newPhones.push("e");
             break;
         case 'ㅛ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             newPhones.push("U");
@@ -1233,7 +1265,7 @@ function tweakKorean_MandarinDelegate(noteGroup, note, phones, northKorean) {
             newPhones.push(":\\i");
             break;
         case 'ㅠ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             newPhones.push("u");
@@ -1567,13 +1599,13 @@ function tweakKorean_PortugueseDelegate(noteGroup, note, phones, northKorean) {
             newPhones.push("E");
             break;
         case 'ㅑ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             newPhones.push("a");
             break;
         case 'ㅒ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             newPhones.push("E");
@@ -1591,7 +1623,7 @@ function tweakKorean_PortugueseDelegate(noteGroup, note, phones, northKorean) {
             newPhones.push("e");
             break;
         case 'ㅕ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             if (northKorean) {
@@ -1603,7 +1635,7 @@ function tweakKorean_PortugueseDelegate(noteGroup, note, phones, northKorean) {
             }
             break;
         case 'ㅖ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             newPhones.push("e");
@@ -1621,9 +1653,9 @@ function tweakKorean_PortugueseDelegate(noteGroup, note, phones, northKorean) {
             break;
         case 'ㅚ':
             tweakKorean(noteGroup, note, phones, northKorean, true);
-            break;
+            return;
         case 'ㅛ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             newPhones.push("o");
@@ -1641,7 +1673,6 @@ function tweakKorean_PortugueseDelegate(noteGroup, note, phones, northKorean) {
                 return;
             }
             break;
-            break;
         case 'ㅞ':
             newPhones.push("w");
             newPhones.push("e");
@@ -1651,7 +1682,7 @@ function tweakKorean_PortugueseDelegate(noteGroup, note, phones, northKorean) {
             newPhones.push("i");
             break;
         case 'ㅠ':
-            if ("ㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
+            if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {
                 newPhones.push("j");
             }
             newPhones.push("u");
@@ -1792,13 +1823,14 @@ function perform() {
         const j = note.getIndexInParent();
         const phonemes = attributes[j]["phonemes"];
         if (decomposeHangul(note.getLyrics())["onset"] != null) {
+            note.setPhonemes(null);
             tweakKorean(noteGroup, note, phonemes.map(function (p) { return p["symbol"]; }), northKoreanCheckValue.getValue(), false);
         }
     }
 }
 
 var buttonValue = SV.create("WidgetValue");
-buttonValue.setValueChangeCallback(function () { perform(); SV.setTimeout(1000, perform); });
+buttonValue.setValueChangeCallback(perform);
 
 function getSidePanelSectionState() {
     return {

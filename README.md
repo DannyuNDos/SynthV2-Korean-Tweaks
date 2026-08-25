@@ -19,11 +19,13 @@ The pronunciation issues that this script fixes include:
 
 This script also offers an option as a checkbox, namely for North Korean pronunciation, specifically for the de-palatalized ㅈ/ㅉ/ㅊ and the rounded ㅓ.
 
+There are two buttons, one for resetting phonemes, the other for the actual correction of the Korean pronunciation. If you think the correction didn't go through, press the reset button and try again.
+
 ## Caveats
 You need SynthV Studio 2 with the version of at least 2.3.0tp1 to use this script.
 
 This script works only for Hangul lyrics.
 
-This script borrows French, Mandarin, and Portuguese phonemes to aid the Korean pronunciation.
+This script borrows French, Mandarin, and German phonemes to aid the Korean pronunciation.
 
 This script is guaranteed to work on only the standalone version of SynthV Studio 2. On the VSTi version, this script may suffer from compatibility issues.

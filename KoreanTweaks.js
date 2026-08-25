@@ -56,7 +56,7 @@ function getTranslations(langCode) {
             [TITLE, "RÉGLAGES DU CORÉEN"],
             [MESSAGE, "Sélectionnez des notes avec les paroles de Hangul, et appuyez sur un bouton."],
             [NORTH_KOREAN_TEXT, "Utiliser la prononciation nord-coréen"],
-            [RESET_BUTTON_TEXT, "Réinitialiser les phonèmes des paroles coréennes"],
+            [RESET_BUTTON_TEXT, "Réinitialiser les phonèmes coréennes"],
             [BUTTON_TEXT, "Corriger la prononciation"]
         ];
     }
@@ -65,7 +65,7 @@ function getTranslations(langCode) {
             [TITLE, "AJUSTES EN COREANO"],
             [MESSAGE, "Seleccione notas con las letras de Hangul, y apriete un botón."],
             [NORTH_KOREAN_TEXT, "Usar la pronunciación norcoreano"],
-            [RESET_BUTTON_TEXT, "Reinicializar los fonemas de las letras coreanas"],
+            [RESET_BUTTON_TEXT, "Reinicializar los fonemas coreanas"],
             [BUTTON_TEXT, "Corregir la pronunciación"]
         ];
     }

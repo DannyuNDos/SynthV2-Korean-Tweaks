@@ -12,6 +12,7 @@ Copy the attached JavaScript file to the `scripts` folder, as accessible by exec
 In the SynthV Studio, select the notes that has Korean lyrics written in Hangul, then press the button in `Korean Tweaks` sub-panel in the scripts panel. If this doesn't appear in the script panel, execute `Scripts > Rescan` in the menu bar, and try again.
 
 The pronunciation issues that this script fixes include:
+* Sandhi
 * Codas ㄱ/ㄷ/ㅂ
 * Palatalization of ㅅ/ㅆ
 * Pronunciation of ㅚ/ㅟ

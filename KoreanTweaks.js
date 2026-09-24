@@ -790,9 +790,12 @@ function tweakKorean_MandarinDelegate(noteGroup, note, priorPhones, northKorean)
             newPhones.push("w");
             newPhones.push("a");
             break;
-        case 'ㅙ': case 'ㅚ':
+        case 'ㅙ':
             newPhones.push("w");
             newPhones.push("e");
+            break;
+        case 'ㅚ':
+            newPhones.push("yE");
             break;
         case 'ㅛ':
             if ("ㅅㅆㅈㅉㅊ".indexOf(jamos["onset"]) == -1) {

@@ -18,15 +18,15 @@ The pronunciation issues that this script fixes include:
 * Pronunciation of ㅚ/ㅟ
 * Distinction of ㅐ/ㅔ
 
-This script also offers some options as checkboxes. These are:
-* An option for North Korean pronunciation, specifically for the de-palatalized ㅈ/ㅉ/ㅊ and the rounded ㅓ.
-* An option for forcing putting phonemes, regardless of whether they match the default ones.
+This script also offers an option as a checkbox, namely for North Korean pronunciation, specifically for the de-palatalized ㅈ/ㅉ/ㅊ and the rounded ㅓ.
+
+Due to how Sandhi works in SynthV, you may have to push the button multiple times to fully correct the phonemes.
 
 ## Caveats
-You need SynthV Studio 2 with the version of at least 2.1.2 to use this script.
+You need SynthV Studio 2 with the version of at least 2.3.0tp1 to use this script.
 
 This script works only for Hangul lyrics.
 
-This script borrows Mandarin, English, and Japanese phonemes to aid the Korean pronunciation.
+This script borrows Mandarin and English phonemes to aid the Korean pronunciation.
 
 This script is guaranteed to work on only the standalone version of SynthV Studio 2. On the VSTi version, this script may suffer from compatibility issues.

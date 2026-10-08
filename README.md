@@ -1,5 +1,6 @@
 # SynthV2-Korean-Tweaks
 A script for aiding SynthV 2's Korean pronunciation.
+**This script is mostly outdated since the release of SynthV 2.3.0b1. The development of a new version of this script is underway.**
 
 ## How to use
 

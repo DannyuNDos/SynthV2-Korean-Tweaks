@@ -1,6 +1,5 @@
 # SynthV2-Korean-Tweaks
 A script for aiding SynthV 2's Korean pronunciation.
-**This script is mostly outdated since the release of SynthV 2.3.0b1. The development of a new version of this script is underway.**
 
 ## How to use
 
@@ -12,22 +11,19 @@ Copy the attached JavaScript file to the `scripts` folder, as accessible by exec
 ### Execution
 In the SynthV Studio, select the notes that has Korean lyrics written in Hangul, then press the button in `Korean Tweaks` sub-panel in the scripts panel. If this doesn't appear in the script panel, execute `Scripts > Rescan` in the menu bar, and try again.
 
-The pronunciation issues that this script fixes include:
-* Sandhi
-* Codas ㄱ/ㄷ/ㅂ
-* Palatalization of ㅅ/ㅆ
-* Pronunciation of ㅚ/ㅟ
+The pronunciation issues that this script fixes are:
+* Pronunciation of ㅟ
 * Distinction of ㅐ/ㅔ
 
 This script also offers an option as a checkbox, namely for North Korean pronunciation, specifically for the de-palatalized ㅈ/ㅉ/ㅊ and the rounded ㅓ.
 
-Due to how Sandhi works in SynthV, you may have to push the button multiple times to fully correct the phonemes.
+Another checkbox option is for the monophthongized ㅚ.
 
 ## Caveats
-You need SynthV Studio 2 with the version of at least 2.3.0tp1 to use this script.
+You need SynthV Studio 2 with the version of at least 2.3.0b1 to use this script.
 
 This script works only for Hangul lyrics.
 
-This script borrows Mandarin and English phonemes to aid the Korean pronunciation.
+This script borrows phonemes of foreign languages to aid the Korean pronunciation.
 
 This script is guaranteed to work on only the standalone version of SynthV Studio 2. On the VSTi version, this script may suffer from compatibility issues.

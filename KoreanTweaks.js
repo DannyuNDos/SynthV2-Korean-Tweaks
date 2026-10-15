@@ -117,6 +117,9 @@ function tweakKorean(note, phonemeStr, northKorean, oe) {
     if (northKorean && "ㅑㅒㅕㅖㅛㅟㅠㅣ".indexOf(jamos.vowel) == -1) {
         replacer(/ts\\/, "ts") || replacer(/dz\\/, "d z") || replacer(/ts\\_t/, "cl ts") || replacer(/ts\\_h/, "tsh");
     }
+    if (northKorean) {
+        replacer(/V/, "O");
+    }
     if (oe && jamos.vowel == "ㅚ") {
         replacer(/w e/, "2");
     }

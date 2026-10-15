@@ -24,6 +24,6 @@ You need SynthV Studio 2 with the version of at least 2.3.0b1 to use this script
 
 This script works only for Hangul lyrics.
 
-This script borrows Mandarin and English phonemes to aid the Korean pronunciation.
+This script borrows phonemes of foreign languages to aid the Korean pronunciation.
 
 This script is guaranteed to work on only the standalone version of SynthV Studio 2. On the VSTi version, this script may suffer from compatibility issues.

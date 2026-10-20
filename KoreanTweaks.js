@@ -115,7 +115,7 @@ function tweakKorean(note, phonemeStr, northKorean, oe) {
         return false;
     }
     if (northKorean && "ㅑㅒㅕㅖㅛㅟㅠㅣ".indexOf(jamos.vowel) == -1) {
-        replacer(/ts\\/, "ts") || replacer(/dz\\/, "d z") || replacer(/ts\\_t/, "cl ts") || replacer(/ts\\_h/, "tsh");
+        replacer(/ts\\/, "ts"); replacer(/dz\\/, "d z"); replacer(/ts\\_t/, "cl ts"); replacer(/ts\\_h/, "tsh");
     }
     if (northKorean) {
         replacer(/V/, "O");

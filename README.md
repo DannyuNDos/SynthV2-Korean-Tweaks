@@ -20,7 +20,7 @@ This script also offers an option as a checkbox, namely for North Korean pronunc
 Another checkbox option is for the monophthongized ㅚ.
 
 ## Caveats
-You need SynthV Studio 2 with the version of at least 2.3.0b1 to use this script.
+You need SynthV Studio 2 with the version of at least 2.3.0b2 to use this script.
 
 This script works only for Hangul lyrics.
 
